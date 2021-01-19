@@ -5,7 +5,7 @@ import classes from "./sample.module.css"
 const gclr = 'greenFont';
 const dottedborder = {border: "red 2px dotted"}
 const jill =[];
-// jill.push(gclr);
+jill.push(gclr);
 jill.push("pad");
 jill.push("heading");
 jill.push(classes.fontWt);
