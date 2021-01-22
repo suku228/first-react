@@ -10,6 +10,7 @@ import AddRedFont from "./components/FHOC";
 import useList from "./components/hooks/useList";
 import ChildComponents from "./components/ChildComponents";
 import FChildComponent from "./components/FChildComponent";
+import RefForm from "./components/RefForm";
 
 const makeGreen = (BaseComponent) => (props) => {
   const addProps = {
@@ -36,32 +37,53 @@ function App({ hname }) {
   //   { name: "curd", price: 100,isEditable:false },
   // ]);
   const items = useList([
-    { name: "tomato", price: 20,isEditable:false },
-    { name: "rice", price: 50,isEditable:false },
-    { name: "curd", price: 100,isEditable:false },
-  ])
+    { name: "tomato", price: 20, isEditable: false },
+    { name: "rice", price: 50, isEditable: false },
+    { name: "curd", price: 100, isEditable: false },
+  ]);
   // const[isEditable, setEditable] = React.useState(false);
 
+  const fNameRef = React.useRef();
+  const lNameRef = React.useRef();
+  const submitRef = React.useRef();
+  // React.useEffect(() => {
+  //   fNameRef.current.focus();
+  // }, []);
+
+  const keyDownHandler = (event) => {
+    console.log("key", event.keyCode);
+    if (event.keyCode === 13) {
+      switch (event.target.id) {
+        case 'fName':
+          lNameRef.current.focus()
+          break;
+        case 'lName':
+          submitRef.current.focus()
+          break;
+      }
+    }
+  };
   const removeItemHandler = (e) => {
     // setList([...listNames.filter((val, k) => e.target.name !== val.name)]);
-    items.removeItem(e.target.name)
+    items.removeItem(e.target.name);
   };
 
-  const ondblClickHandler = (e,index)=>{
+  const ondblClickHandler = (e, index) => {
     // const dummyList = [...listNames];
     //   dummyList[index].isEditable = !dummyList[index].isEditable;
     //   setList([...dummyList])
-    items.toggler(index)
-  }
-  const keyPressHandler = (e, index) =>{
+    items.toggler(index);
+  };
+  const keyPressHandler = (e, index) => {
     // if(e.key==='Enter'){
     //   const dummyList = [...listNames];
     //   dummyList[index].isEditable = !dummyList[index].isEditable;
     //   dummyList[index].name = e.target.value;
     //   setList([...dummyList])
     // }
-    items.changeName(e.key, e.target.value, index)
-  }
+    items.changeName(e.key, e.target.value, index);
+  };
+
   return (
     <div className="App">
       <header className="App-header">
@@ -80,8 +102,25 @@ function App({ hname }) {
             onKeyPress = {keyPressHandler}
           />
         ))} */}
-        <ChildComponents />
-        <FChildComponent />
+        {/* <ChildComponents />
+        <FChildComponent /> */}
+        {/* first name :{" "}
+        <input
+          type="text"
+          id="fName"
+          ref={fNameRef}
+          onKeyDown={keyDownHandler}
+        />{" "}
+        <br />
+        last name :{" "}
+        <input
+          type="text"
+          id="lName"
+          ref={lNameRef}
+          onKeyDown={keyDownHandler}
+        />
+        <button ref={submitRef}>submit</button> */}
+        <RefForm ref={fNameRef}></RefForm>
       </header>
     </div>
   );

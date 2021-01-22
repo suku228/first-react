@@ -8,6 +8,7 @@ function useList(init) {
       setList([...list.filter((val, k) => name !== val.name)]);
     },
     changeName(key, newVal, index){
+      
         if(key==='Enter'){
             const dummyList = [...list];
             dummyList[index].isEditable = !dummyList[index].isEditable;
