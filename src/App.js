@@ -2,7 +2,7 @@ import logo from "./logo.svg";
 import "./App.scss";
 import H3 from "./components/SideList";
 import UpdateComponent from "./components/UpdateComponent";
-import React from "react";
+import React, { useRef } from "react";
 import ClickCounter from "./components/ClickCounter";
 import HoverCounter from "./components/HoverCounter";
 import Cntr from "./components/Cntr";
@@ -11,6 +11,13 @@ import useList from "./components/hooks/useList";
 import ChildComponents from "./components/ChildComponents";
 import FChildComponent from "./components/FChildComponent";
 import RefForm from "./components/RefForm";
+import FetchLoc from "./components/FetchLoc";
+import usePrevious from "./components/hooks/usePrevious";
+import ForLayoutEffect from "./components/hooks/ForLayoutEffect";
+import {BrowserRouter, Route} from 'react-router-dom';
+import HeadingCom from './components/routingcomponents/HeadingCom'
+import caxios from './caxios'
+//import axiosInterceptor from './caxios'
 
 const makeGreen = (BaseComponent) => (props) => {
   const addProps = {
@@ -28,8 +35,8 @@ const makeGreen = (BaseComponent) => (props) => {
 };
 // const GreenNameTag = makeGreen(H3);
 // const cntr = AddRedFont(ClickCounter);
-function App({ hname }) {
-  console.log(hname);
+function App() {
+  // console.log(hname);
 
   // const [listNames, setList] = React.useState([
   //   { name: "tomato", price: 20,isEditable:false },
@@ -43,15 +50,36 @@ function App({ hname }) {
   ]);
   // const[isEditable, setEditable] = React.useState(false);
 
-  const fNameRef = React.useRef();
-  const lNameRef = React.useRef();
-  const submitRef = React.useRef();
-  // React.useEffect(() => {
-  //   fNameRef.current.focus();
-  // }, []);
+  const fNameRef = React.useRef(null);
+  const lNameRef = React.useRef(null);
+  const submitRef = React.useRef(null);
+  const [age, setAge] = React.useState(21);
+  const prevAge = usePrevious(age);
+
+  const youngerHandler = ()=>{
+    setAge(age - 1)
+  }
+  React.useEffect(() => {
+    // const axiosInstance = axios.create();
+    // axiosInstance.interceptors.response.use((response) => {
+    //   console.log('usde',response)
+    //   if (response.status === 401) {
+    //     console.log("You are not authorized");
+    //     //redirect
+    //   }
+    //   return response;
+    // }, (error) => {
+    //   if (error.response && error.response.data) {
+    //     return Promise.reject(error.response.data);
+    //   }
+    //   return Promise.reject(error.message);
+    // });
+    // fNameRef.current.focus();
+    caxios().get('https://jsonplaceholder.typicode.com/users')
+  }, []);
 
   const keyDownHandler = (event) => {
-    console.log("key", event.keyCode);
+    console.log("key", event.keyCode, event.key);
     if (event.keyCode === 13) {
       switch (event.target.id) {
         case 'fName':
@@ -84,10 +112,19 @@ function App({ hname }) {
     items.changeName(e.key, e.target.value, index);
   };
 
+  const nameRef = useRef(null);
+
+  const onChangeName = ()=>{
+    console.log('on change name', nameRef.current.value)
+  }
+
+  const [val, setVal] = React.useState(20);
+  const valRef = React.useRef(null);
+  // const {width, height} = ForLayoutEffect(valRef, val)
   return (
     <div className="App">
       <header className="App-header">
-        <h1 className="heading">Headers</h1>
+        {/* <h1 className="heading">Headers</h1> */}
         {/* <ClickCounter />
         <HoverCounter /> */}
         {/* <Cntr /> */}
@@ -120,7 +157,25 @@ function App({ hname }) {
           onKeyDown={keyDownHandler}
         />
         <button ref={submitRef}>submit</button> */}
-        <RefForm ref={fNameRef}></RefForm>
+         <RefForm id="fName" placeholder="enter first name" keyDownHandler={keyDownHandler} ref={fNameRef}></RefForm>
+        <RefForm id="lName" placeholder="enter last name" keyDownHandler={keyDownHandler}  ref={lNameRef}></RefForm>
+      <button ref={submitRef}>submit</button> 
+      {/* <FetchLoc /> */}
+      {/* <h3>Age:{age}</h3>
+      <button onClick={()=>youngerHandler()}>make me younger</button>
+      <h3>prev age: {prevAge}</h3>
+      <input type="text" ref={nameRef} onChange={onChangeName}/> */}
+        {/* <h1>Height:{height}, Widht:{width}</h1>
+        <div ref={valRef}>{val}</div>
+        <button onClick={()=>setVal(val*10)}>10*</button> */}
+        <BrowserRouter>
+          <Route exact path="/" render={()=><h1>hey this is my Login page</h1>}></Route>
+
+          {/* <Route exact path="/user/:firstname" render={({match})=>{
+            return <h1>user page {match.params.firstname}</h1>
+          }}></Route> */}
+          <Route path="/users/:firstname" component={HeadingCom}></Route>          
+        </BrowserRouter>
       </header>
     </div>
   );
