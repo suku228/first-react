@@ -75,8 +75,12 @@ function App() {
     //   return Promise.reject(error.message);
     // });
     // fNameRef.current.focus();
-    caxios().get('https://jsonplaceholder.typicode.com/users')
-  }, []);
+    caxios(
+      {
+        url:'/users',
+        method:'GET'
+      })
+  });
 
   const keyDownHandler = (event) => {
     console.log("key", event.keyCode, event.key);
@@ -157,6 +161,7 @@ function App() {
           onKeyDown={keyDownHandler}
         />
         <button ref={submitRef}>submit</button> */}
+        <input type="text" onChange={(e)=>setVal(e.target.value)} />
          <RefForm id="fName" placeholder="enter first name" keyDownHandler={keyDownHandler} ref={fNameRef}></RefForm>
         <RefForm id="lName" placeholder="enter last name" keyDownHandler={keyDownHandler}  ref={lNameRef}></RefForm>
       <button ref={submitRef}>submit</button> 

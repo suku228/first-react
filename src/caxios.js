@@ -1,22 +1,22 @@
 import axios from 'axios'
 
-function caxios() {
-    const axiosInstance = axios.create();
-    axiosInstance.interceptors.response.use((response) => {
+    const caxios = axios.create({
+        baseURL:'https://jsonplaceholder.typicode.com'
+    });
+    caxios.interceptors.response.use((response) => {
       console.log('usde',response.status)
+      if (response.status === 200)
+            alert(".....")
       if (response.status === 401) {
         console.log("You are not authorized");
-        //redirect
       }
       return response;
     });
 
-    axiosInstance.interceptors.request.use((config)=>{
-        // if (config.method !== 'OPTIONS')
-        config.headers.headwt = 'sukesh'
+    caxios.interceptors.request.use((config)=>{
+        config.headers.headwt = 'bearer_gfr56vyut677fyughgu76tyuguy67'
         return config;
     })
-    return axiosInstance
-}
+
 
 export default caxios
